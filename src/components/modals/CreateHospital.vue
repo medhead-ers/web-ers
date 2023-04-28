@@ -165,7 +165,7 @@ export default {
           country : null
         },
         medicalSpecialities : [],
-        gpsCoordinates : {latitude : 51.5168739071931, longitude : -0.10158713368240736},
+        gpsCoordinates : {latitude : null , longitude : null}, // eg. 51.5168739071931, -0.10158713368240736
         totalEmergencyBedrooms : 0
       }
     }
