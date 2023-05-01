@@ -7,14 +7,19 @@ import Vuex from 'vuex'
 
 import  '@/scss/style.scss';
 import axios from "axios";
+import {getAuthCredentials, isLoggedIn} from "@/utils/auth";
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vuex)
 
-const medheadAPI = "http://medhead.localhost";
+axios.defaults.baseURL = 'http://medhead.localhost';
+if(isLoggedIn()){
+  axios.defaults.auth = getAuthCredentials();
+}
+
 const websocketServer = {
-  host: "localhost",
+  host: "medhead.localhost",
   port : 3500
 }
 const refreshOnEventTable  = {
@@ -57,22 +62,22 @@ const store = new Vuex.Store({
 
   mutations: {
     refreshHospitals() {
-      axios.get(medheadAPI + '/hms/hospitals')
+      axios.get('/hms/hospitals')
         .then( response => this.state.hospitals = response.data )
         .catch( error => this.state.appError = error );
     },
     refreshEmergencies() {
-      axios.get(medheadAPI + '/ems/emergencies')
+      axios.get('/ems/emergencies')
           .then ( response => this.state.emergencies = response.data )
           .catch( error => this.state.appError = error );
     },
     refreshEmergencyBedroomsForHospital(state, hospitalId) {
-      axios.get(medheadAPI + '/hms/hospitals/'+hospitalId+'/emergency-bedrooms')
+      axios.get('/hms/hospitals/'+hospitalId+'/emergency-bedrooms')
         .then ( response =>this.state.emergencyBedroomsForHospital = {hospitalId : hospitalId, emergencyBedrooms : response.data})
         .catch( error => this.state.appError = error );
     },
     refreshPatients() {
-      axios.get(medheadAPI + '/pms/patients')
+      axios.get('/pms/patients')
         .then( response => this.state.patients = response.data )
         .catch( error => this.state.appError = error );
     },
@@ -84,9 +89,7 @@ new Vue({
   store,
   render: app => app(App),
   beforeCreate() {
-    this.$store.commit('refreshHospitals');
-    this.$store.commit('refreshEmergencies');
-    this.$store.commit('refreshPatients');
+
   },
 
   created() {

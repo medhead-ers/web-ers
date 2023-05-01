@@ -34,15 +34,13 @@ export default {
   },
 
   methods: {
-    login() {      // Todo : implement real login
-      try {
-        this.loginError = null;
-        loginUser(this.username, this.password)
+    login() {
+      this.loginError = null;
+      loginUser(this.username, this.password).then(() => {
         this.$router.push('/');
-      }
-      catch (err) {
+      }).catch(err => {
         this.loginError = err;
-      }
+      })
     }
   }
 }

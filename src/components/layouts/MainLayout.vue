@@ -29,7 +29,12 @@ import Sidebar from "@/components/layouts/Sidebar.vue";
 
 export default {
   name: "MainLayout",
-  components: {Sidebar, Navbar, EmergencyDispatchedNotification}
+  components: {Sidebar, Navbar, EmergencyDispatchedNotification},
+  created() {
+    this.$store.commit('refreshHospitals');
+    this.$store.commit('refreshEmergencies');
+    this.$store.commit('refreshPatients');
+  }
 }
 </script>
 
