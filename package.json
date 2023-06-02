@@ -32,6 +32,7 @@
     "@vue/test-utils": "1.2.1",
     "babel-eslint": "^10.1.0",
     "babel-preset-airbnb": "^5.0.0",
+    "cypress": "^12.13.0",
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",

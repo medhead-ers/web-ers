@@ -36,6 +36,11 @@ export function clearAuthCredentials() {
 }
 
 export function isLoggedIn() {
-  let authCredentials = getAuthCredentials()
+  let authCredentials = getAuthCredentials();
   return !!authCredentials
+}
+
+export function getDigestUsername() {
+  let username =  getAuthCredentials().username;
+  return username.charAt(0).toUpperCase() + username.slice(1);
 }

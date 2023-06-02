@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-table ref="emergenciesTable" striped hover :items="emergencies" :fields="fields" :per-page="perPage" :current-page="currentPage" show-empty
-      :style="showPagination ? 'min-height:285px' : ''">
+      :style="showPagination ? 'min-height:285px' : ''" class="emergencies-table">
       <template #empty>
         <div class="text-center">Aucune urgence enregistrées</div>
       </template>

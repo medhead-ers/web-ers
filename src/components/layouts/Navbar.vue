@@ -12,6 +12,10 @@
       </b-navbar-nav>
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto mr-3">
+        <div id="username" class="btn">
+          <b-icon icon="person-fill" aria-hidden="true"></b-icon>
+          <b> {{$store.state.username}}</b>
+        </div>
         <b-button variant="outline-danger" @click="logout()">Déconnexion
           <b-icon icon="power" aria-hidden="true"></b-icon>
         </b-button>
