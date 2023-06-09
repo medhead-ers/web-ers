@@ -13,10 +13,10 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vuex)
 
-axios.defaults.baseURL = 'http://medhead.localhost';
+axios.defaults.baseURL = process.env.MEDHEADERS_API_BASE_URL;
 
 const websocketServer = {
-  host: "medhead.localhost",
+  host: process.env.MEDHEADERS_WSS_HOST,
   port : 3500
 }
 const refreshOnEventTable  = {

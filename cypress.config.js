@@ -3,7 +3,7 @@ const cypress = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: "http://localhost:3000",
+    baseUrl: process.env.APP_URL,
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
@@ -12,10 +12,11 @@ module.exports = defineConfig({
   },
 
   component: {
+    supportFile: "tests/cypress/support/component.js",
+    indexHtmlFile: "tests/cypress/support/component-index.html",
     devServer: {
       framework: "vue-cli",
       bundler: "webpack",
-      supportFile: "tests/cypress/support/component.js",
     },
   },
   fixturesFolder: "tests/cypress/fixtures",
