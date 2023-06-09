@@ -29,7 +29,7 @@ const routes = [
     }
   },
   {
-    path: '/',
+    path: '/dashboard',
     name: 'home',
     component: Home,
   },
@@ -51,8 +51,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  if(to.path === '/'){
+    next({path : '/dashboard'})
+  }
   if (to.name === 'login' && isLoggedIn()) {
-    next({ path: '/' })
+    next({ path: '/dashboard' })
   }
   else if (!to.meta.allowAnonymous && !isLoggedIn()) {
     next({

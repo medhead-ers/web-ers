@@ -7,19 +7,16 @@ import Vuex from 'vuex'
 
 import  '@/scss/style.scss';
 import axios from "axios";
-import {getAuthCredentials, isLoggedIn} from "@/utils/auth";
+import {getAuthCredentials, getDigestUsername, isLoggedIn} from "@/utils/auth";
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vuex)
 
-axios.defaults.baseURL = 'http://medhead.localhost';
-if(isLoggedIn()){
-  axios.defaults.auth = getAuthCredentials();
-}
+axios.defaults.baseURL = process.env.MEDHEADERS_API_BASE_URL;
 
 const websocketServer = {
-  host: "medhead.localhost",
+  host: process.env.MEDHEADERS_WSS_HOST,
   port : 3500
 }
 const refreshOnEventTable  = {
@@ -42,6 +39,7 @@ const store = new Vuex.Store({
     pendingEmergencyId : null,
     emergencyUpdatedNotification : {},
     appError: null,
+    username: null,
     mapMedicalSpecialities : new Map([
       ["CARDIOLOGY", "Cardiologie"],
       ["OPHTHALMOLOGY", "Ophtalmologie"],
@@ -89,7 +87,10 @@ new Vue({
   store,
   render: app => app(App),
   beforeCreate() {
-
+    if(isLoggedIn()){
+      axios.defaults.auth = getAuthCredentials();
+      this.$store.state.username = getDigestUsername();
+    }
   },
 
   created() {

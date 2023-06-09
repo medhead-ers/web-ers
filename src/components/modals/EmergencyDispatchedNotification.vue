@@ -26,7 +26,7 @@
         </div>
         <div class="row">
           <div class="col-10 mx-auto mt-2 mb-3">
-            <button @click="close" class="btn btn-success btn-md btn-block">Teminer</button>
+            <button @click="close" class="btn btn-success btn-md btn-block">Terminer</button>
           </div>
         </div>
       </div>

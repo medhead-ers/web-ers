@@ -6,7 +6,7 @@
       </h6>
       <ul class="nav flex-column">
         <li class="nav-item">
-          <router-link to="/" class="nav-link" exact-active-class="active">
+          <router-link to="/dashboard" class="nav-link" exact-active-class="active">
             Dashboard
           </router-link>
         </li>
