@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-table striped hover :items="patients" :fields="fields"  :per-page="perPage" :current-page="currentPage" show-empty
-             :style="showPagination ? 'min-height:285px' : ''">
+             :style="showPagination ? 'min-height:285px' : ''" class="patients-table">
       <template #empty>
         <div class="text-center">Aucun patient disponibles</div>
       </template>

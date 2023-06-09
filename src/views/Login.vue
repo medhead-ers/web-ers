@@ -7,8 +7,8 @@
       <h1 class="h4 mb-4 mt-4 font-weight-normal">Authentification</h1>
 
       <b-alert :show="loginError !== null" variant="danger">Erreur : {{loginError}}</b-alert>
-      <input v-model="username" type="string" class="form-control" placeholder="Identifiant" required autofocus>
-      <input v-model="password" type="password" class="form-control" placeholder="Mot de passe" required>
+      <input v-model="username" name="username" type="string" class="form-control" placeholder="Identifiant" required autofocus>
+      <input v-model="password" name="password" type="password" class="form-control" placeholder="Mot de passe" required>
       <div class="col-10 mx-auto mt-4 pt-2">
         <button class="btn btn-lg btn-success btn-block" type="submit">Se connecter</button>
       </div>
@@ -20,7 +20,7 @@
 
 <script>
 import BrandName from "@/components/layouts/BrandName.vue";
-import {loginUser} from "@/utils/auth";
+import {getDigestUsername, loginUser} from "@/utils/auth";
 
 export default {
   name: "Login",
@@ -34,15 +34,14 @@ export default {
   },
 
   methods: {
-    login() {      // Todo : implement real login
-      try {
-        this.loginError = null;
-        loginUser(this.username, this.password)
-        this.$router.push('/');
-      }
-      catch (err) {
+    login() {
+      this.loginError = null;
+      loginUser(this.username, this.password).then(() => {
+        this.$store.state.username = getDigestUsername();
+        this.$router.push('/dashboard');
+      }).catch(err => {
         this.loginError = err;
-      }
+      })
     }
   }
 }

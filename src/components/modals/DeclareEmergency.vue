@@ -117,7 +117,7 @@ export default {
     },
 
     async createPatient(){
-      return axios.post('http://medhead.localhost/pms/patients', this.patient)
+      return axios.post('/pms/patients', this.patient)
         .then(response =>{
           this.patient = response.data;
           this.emergency.patientId = this.patient.id;
@@ -128,7 +128,7 @@ export default {
     },
 
     declareEmergency() {
-      return axios.post('http://medhead.localhost/ems/emergencies', this.emergency)
+      return axios.post('/ems/emergencies', this.emergency)
         .then(response =>{
           this.$store.state.pendingEmergencyId = response.data.id;
           this.$refs['declareEmergency'].hide();

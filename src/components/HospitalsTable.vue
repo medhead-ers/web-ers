@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-table v-if="!lightTable" ref="hospitalsTableFull" striped hover :items="hospitals" :fields="fields"  :per-page="perPage" :current-page="currentPage" show-empty>
+    <b-table v-if="!lightTable" ref="hospitalsTableFull" striped hover :items="hospitals" :fields="fields"  :per-page="perPage" :current-page="currentPage"
+             show-empty class="hospitals-table">
       <template #cell(address)="data">
         <div>{{ data.item.address.numberAndStreetName}}</div>
         <div>{{ data.item.address.addressComplement}}</div>
@@ -25,7 +26,7 @@
     </b-table>
     <!-- Light table -->
     <b-table v-else ref="hospitalsTableLight" striped hover :items="hospitals" :fields="fields" show-empty  :per-page="perPage" :current-page="currentPage"
-             :style="showPagination ? 'min-height:285px' : ''" show-empty>
+             :style="showPagination ? 'min-height:285px' : ''" show-empty class="hospitals-table light-hospitals-table" @row-clicked="onRowClicked">
       <template #cell(address)="data">
         <div>{{ data.item.address.numberAndStreetName}}</div>
         <div>{{ data.item.address.addressComplement}}</div>
@@ -79,5 +80,10 @@ export default {
     }
   },
 
+  methods : {
+    onRowClicked(item, index, event) {
+      this.$router.push({ name: 'hospital-emergency-bedrooms', params: { hospitalId : item.id }})
+    }
+  }
 }
 </script>

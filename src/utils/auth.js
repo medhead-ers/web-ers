@@ -1,33 +1,46 @@
-const AUTH_TOKEN_KEY = 'authToken'
+import axios from "axios";
+
+const AUTH_CREDENTIALS_KEY = 'auth'
 
 export function loginUser(username, password) {
   return new Promise( (resolve, reject) => {
-    if(username === 'admin' && password === 'admin') {
-      let authToken = [...Array(30)].map(() => Math.random().toString(36)[2]).join('');
-      setAuthToken(authToken);
+    let credentials = {
+      username : username,
+      password : password
+    };
+
+    axios.get('/eds', {auth : credentials}).then(() => {
+      axios.defaults.auth = credentials;
+      setAuthCredentials(credentials);
       resolve();
-    }
-    else reject('Identifiants invalides');
+    }).catch(() => {
+      reject('Identifiants invalides');
+    });
   })
 }
 
 export function logoutUser() {
-  clearAuthToken()
+  clearAuthCredentials()
 }
 
-export function setAuthToken(token) {
-  localStorage.setItem(AUTH_TOKEN_KEY, token)
+export function setAuthCredentials(credentials) {
+  sessionStorage.setItem(AUTH_CREDENTIALS_KEY, JSON.stringify(credentials))
 }
 
-export function getAuthToken() {
-  return localStorage.getItem(AUTH_TOKEN_KEY)
+export function getAuthCredentials() {
+  return JSON.parse(sessionStorage.getItem(AUTH_CREDENTIALS_KEY))
 }
 
-export function clearAuthToken() {
-  localStorage.removeItem(AUTH_TOKEN_KEY)
+export function clearAuthCredentials() {
+  sessionStorage.removeItem(AUTH_CREDENTIALS_KEY)
 }
 
 export function isLoggedIn() {
-  let authToken = getAuthToken()
-  return !!authToken
+  let authCredentials = getAuthCredentials();
+  return !!authCredentials
+}
+
+export function getDigestUsername() {
+  let username =  getAuthCredentials().username;
+  return username.charAt(0).toUpperCase() + username.slice(1);
 }

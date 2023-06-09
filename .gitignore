@@ -6,6 +6,9 @@ node_modules
 .env
 .env.local
 .env.*.local
+cypress.env.json
+tests/cypress/videos
+tests/cypress/screenshots
 
 # Log files
 npm-debug.log*
@@ -21,3 +24,4 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
+

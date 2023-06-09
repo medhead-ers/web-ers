@@ -184,7 +184,7 @@ export default {
     },
 
     async createHospital(){
-      return axios.post('http://medhead.localhost/hms/hospitals', this.hospital)
+      return axios.post('/hms/hospitals', this.hospital)
         .then(response =>{
           this.hospital = response.data;
       })
@@ -194,7 +194,7 @@ export default {
     },
 
     async createEmergencyBedrooms(){
-      return axios.post('http://medhead.localhost/hms/hospitals/'+this.hospital.id + '/emergency-bedrooms/' + this.nbEmergencyBedrooms)
+      return axios.post('hms/hospitals/'+this.hospital.id + '/emergency-bedrooms/' + this.nbEmergencyBedrooms)
         .then(response =>{
           this.hospital.totalEmergencyBedrooms = response.data.length;
           this.form.hospitalCreatedWithSuccess = true;
