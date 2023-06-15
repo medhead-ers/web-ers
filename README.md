@@ -26,7 +26,7 @@ Ce dépot contient l'application web développée dans le cadre du POC MedHead E
 
 ### Configuration de l'application
 
-Une configuration minimale de l'application est nécessaire en créant un fichier `.env` sur la base du fichier d'exemple.
+La configuration de l'application peut être effectuée en modifiant les paramètre du fichier `webers.config.js` (documentation fournie dans le fichier de config).
 
 ### Démarrage de l'application
 
