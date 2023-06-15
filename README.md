@@ -64,3 +64,6 @@ Il est aussi possible d'utiliser l'outil de visualisation Cypress pour suivre vi
 ```shell
 npx cypress open
 ```
+#### Rapport de couverture de code
+
+Une fois les tests joués, les rapports de couverture de code peuvent être consultés au format HTML en accédant au fichier `/coverage/icov-report/index.html`

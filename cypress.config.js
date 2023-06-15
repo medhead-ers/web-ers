@@ -5,7 +5,8 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "http://localhost:3000",
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      require('@cypress/code-coverage/task')(on, config)
+      return config
     },
     supportFile: "tests/cypress/support/e2e.{js,jsx,ts,tsx}",
     specPattern : "tests/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}"
