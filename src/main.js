@@ -8,15 +8,16 @@ import Vuex from 'vuex'
 import  '@/scss/style.scss';
 import axios from "axios";
 import {getAuthCredentials, getDigestUsername, isLoggedIn} from "@/utils/auth";
+import {MEDHEADERS_API_BASE_URL, MEDHEADERS_WSS_HOST} from "../webers.config";
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vuex)
 
-axios.defaults.baseURL = process.env.MEDHEADERS_API_BASE_URL;
+axios.defaults.baseURL = MEDHEADERS_API_BASE_URL;
 
 const websocketServer = {
-  host: process.env.MEDHEADERS_WSS_HOST,
+  host: MEDHEADERS_WSS_HOST,
   port : 3500
 }
 const refreshOnEventTable  = {

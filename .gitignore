@@ -25,3 +25,5 @@ package-lock.json
 *.sln
 *.sw?
 
+/coverage
+.nyc_output

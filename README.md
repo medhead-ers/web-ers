@@ -26,7 +26,7 @@ Ce dépot contient l'application web développée dans le cadre du POC MedHead E
 
 ### Configuration de l'application
 
-Une configuration minimale de l'application est nécessaire en créant un fichier `.env` sur la base du fichier d'exemple.
+La configuration de l'application peut être effectuée en modifiant les paramètre du fichier `webers.config.js` (documentation fournie dans le fichier de config).
 
 ### Démarrage de l'application
 
@@ -64,3 +64,6 @@ Il est aussi possible d'utiliser l'outil de visualisation Cypress pour suivre vi
 ```shell
 npx cypress open
 ```
+#### Rapport de couverture de code
+
+Une fois les tests joués, les rapports de couverture de code peuvent être consultés au format HTML en accédant au fichier `/coverage/icov-report/index.html`
