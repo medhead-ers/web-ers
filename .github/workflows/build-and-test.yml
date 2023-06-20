@@ -1,11 +1,11 @@
 name: Build et Test
-on: [push]
-#  push:
-#    branches:
-#      - main
-#      - develop
-#  pull_request:
-#    types: [opened, synchronize, reopened]
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   static-analysis:
     name: Build et Test (${{ github.event.repository.name }})
@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 18
       # ------------
-      - name: Installation des dependances npm
+      - name: Installation des dépendances npm
         run: npm install
       # ------------
       - name: Lancement des tests de composants
@@ -39,3 +39,9 @@ jobs:
       # ------------
       - name: Arrêt de l'environnement de test
         run: docker-compose -f "ci/testing-environnement/docker-compose.yml" down
+      # ------------
+      - name: Analyse statique - Mise à jour du code coverage
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
