@@ -10,7 +10,7 @@ describe('Authentication page', () => {
   // ---------------------------------------------------------------------
   it('User should fail to login when using bad credentials', () => {
     // When...
-    cy.login('test', 'test', true);
+    cy.login('FakeUser', 'AnImprobablePassword', true);
     // Then...
     cy.get('div.alert.alert-danger').should('contain', 'Erreur : Identifiants invalides')
   });

@@ -1,0 +1,41 @@
+name: Build et Test
+on: [push]
+#  push:
+#    branches:
+#      - main
+#      - develop
+#  pull_request:
+#    types: [opened, synchronize, reopened]
+jobs:
+  static-analysis:
+    name: Build et Test (${{ github.event.repository.name }})
+    runs-on: ubuntu-latest
+    steps:
+      # ------------
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      # ------------
+      - name: Configuration Cypress
+        run: cp ci/cypress.env.ci.json cypress.env.json
+      # ------------
+      - name: Démarrage de l'environnement de test
+        run: docker-compose -f "ci/testing-environnement/docker-compose.yml" up -d --build
+      # ------------
+      - name: Installation Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      # ------------
+      - name: Installation des dependances npm
+        run: npm install
+      # ------------
+      - name: Lancement des tests de composants
+        run: npx cypress run --component --config video=false,screenshotOnRunFailure=false
+      # ------------
+      - name: Lancement des tests E2E
+        run: npx cypress run --e2e --config video=false,screenshotOnRunFailure=false
+      # ------------
+      - name: Arrêt de l'environnement de test
+        run: docker-compose -f "ci/testing-environnement/docker-compose.yml" down

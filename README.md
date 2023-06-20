@@ -57,7 +57,7 @@ Des tests E2E et des tests de composants développés avec l'outil Cypress sont 
 
 ```shell
 npx cypress run --e2e
-npx cypress run --components
+npx cypress run --component
 ```
 
 Il est aussi possible d'utiliser l'outil de visualisation Cypress pour suivre visuellement le déroulé des tests :
