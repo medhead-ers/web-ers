@@ -16,5 +16,6 @@ describe('<Login />', () => {
     cy.get('input[name=username]').type('test');
     cy.get('input[name=password]').type('test', { log: false });
     cy.get('button[type=submit]').click();
+
   })
 })

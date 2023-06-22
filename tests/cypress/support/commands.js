@@ -23,6 +23,7 @@ Cypress.Commands.add('login', (username, password, expectFailing) => {
   cy.get('input[name=password]').type(password, { log: false })
   cy.get('button[type=submit]').click();
 
+
   cy.getAllSessionStorage('auth').should('exist');
   if(expectFailing === true){
     cy.url().should('include', '/login')

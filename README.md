@@ -22,6 +22,7 @@ Ce dépot contient l'application web développée dans le cadre du POC MedHead E
 - [GitHub Actions CI/CD Pipelines](#github-actions-ci-cd-pipelines)
 - [Workflow GIT](#workflow-git)
 
+
 ### Requirement :
 
 - Docker
@@ -67,6 +68,7 @@ Il est aussi possible d'utiliser l'outil de visualisation Cypress pour suivre vi
 ```shell
 npx cypress open
 ```
+
 #### Rapport de couverture de code
 
 Une fois les tests joués, les rapports de couverture de code peuvent être consultés au format HTML en accédant au fichier `/coverage/icov-report/index.html`
@@ -93,3 +95,4 @@ Il est possible de résumer le workflow de la manière suivante :
 - Après analyse des métriques qualité, code review etc... : merge de la `pull request` (squash recommandé pour garder 1 commit / feature).
 - Une fois la version basée sur `develop` acceptée, ouverture d'une `pull request` vers `main`.
 - Création d'une release à partir de `main` une fois la version acceptée.
+
