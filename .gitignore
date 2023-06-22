@@ -3,9 +3,10 @@ node_modules
 /dist
 
 # local env files
-.env
-.env.local
-.env.*.local
+/.env
+/.env.local
+/.env.*.local
+
 cypress.env.json
 tests/cypress/videos
 tests/cypress/screenshots
@@ -25,3 +26,5 @@ package-lock.json
 *.sln
 *.sw?
 
+/coverage
+.nyc_output

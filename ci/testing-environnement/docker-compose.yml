@@ -1,0 +1,134 @@
+version: "3"
+services:
+  traefik-proxy:
+    image: traefik:v2.9
+    networks:
+      - backend
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --entrypoints.http.address=:80
+      - --entrypoints.ws.address=:3500
+      - --log=true
+      - --log.level=DEBUG
+      - --log.filepath=/var/log/traefik.log
+    labels:
+      - "traefik.http.middlewares.auth.basicauth.users=${BASIC_AUTH_API_USERS}"
+      - "traefik.http.middlewares.header-config.headers.accesscontrolallowmethods=GET,OPTIONS,PUT"
+      - "traefik.http.middlewares.header-config.headers.accesscontrolallowheaders=*"
+      - "traefik.http.middlewares.header-config.headers.accesscontrolalloworiginlist=${WEBERS_URL}:${WEBERS_PORT}"
+      - "traefik.http.middlewares.header-config.headers.accesscontrolmaxage=100"
+      - "traefik.http.middlewares.header-config.headers.addvaryheader=true"
+    ports:
+      - 80:80
+      - 8080:8080
+      - 3500:3500
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /traefik/log:/var/log
+
+  # Redis dependency
+  redis:
+    image: redis
+    networks:
+      - backend
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./:/app
+    labels:
+      - "traefik.enable=false"
+
+  # TRAN EDS
+  tran-eds:
+    image: medhead/tran-eds:latest
+    networks:
+      - backend
+    depends_on:
+      - redis
+      - traefik-proxy
+    labels:
+      - "traefik.http.routers.tran-eds.entrypoints=http"
+      - "traefik.http.routers.tran-eds.rule=Host(`${MEDHEADERS_API_HOST}`) && PathPrefix(`/eds`)"
+      - "traefik.http.middlewares.eds-stripprefix.stripprefix.prefixes=/eds"
+      - "traefik.http.services.tran-eds.loadbalancer.server.port=8080"
+      - "traefik.http.routers.tran-eds.middlewares=header-config,auth,eds-stripprefix"
+    environment:
+      GRAPPHOPPER_API_KEY: ${GRAPPHOPPER_API_KEY}
+
+    # TRAN PMS
+  bsns-pms:
+    image: medhead/bsns-pms:latest
+    networks:
+      - backend
+    depends_on:
+      - redis
+      - traefik-proxy
+    labels:
+      - "traefik.http.routers.bsns-pms.entrypoints=http"
+      - "traefik.http.routers.bsns-pms.rule=Host(`${MEDHEADERS_API_HOST}`) && PathPrefix(`/pms`)"
+      - "traefik.http.middlewares.pms-stripprefix.stripprefix.prefixes=/pms"
+      - "traefik.http.services.bsns-pms.loadbalancer.server.port=8080"
+      - "traefik.http.routers.bsns-pms.middlewares=header-config,auth,pms-stripprefix"
+
+  # TRAN HMS
+  bsns-hms:
+    image: medhead/bsns-hms:latest
+    networks:
+      - backend
+    depends_on:
+      - redis
+      - traefik-proxy
+    labels:
+      - "traefik.http.routers.bsns-hms.entrypoints=http"
+      - "traefik.http.routers.bsns-hms.rule=Host(`${MEDHEADERS_API_HOST}`) && PathPrefix(`/hms`)"
+      - "traefik.http.middlewares.hms-stripprefix.stripprefix.prefixes=/hms"
+      - "traefik.http.services.bsns-hms.loadbalancer.server.port=8080"
+      - "traefik.http.routers.bsns-hms.middlewares=header-config,auth,hms-stripprefix"
+
+  # TRAN EMS
+  bsns-ems:
+    image: medhead/bsns-ems:latest
+    networks:
+      - backend
+    depends_on:
+      - redis
+      - traefik-proxy
+    labels:
+      - "traefik.http.routers.bsns-ems.entrypoints=http"
+      - "traefik.http.routers.bsns-ems.rule=Host(`${MEDHEADERS_API_HOST}`) && PathPrefix(`/ems`)"
+      - "traefik.http.middlewares.ems-stripprefix.stripprefix.prefixes=/ems"
+      - "traefik.http.services.bsns-ems.loadbalancer.server.port=8080"
+      - "traefik.http.routers.bsns-ems.middlewares=header-config,auth,ems-stripprefix"
+
+  # TRAN WSS
+  tran-wss:
+    image: medhead/tran-wss:latest
+    networks:
+      - backend
+    depends_on:
+      - redis
+    labels:
+      - "traefik.http.routers.tran-wss.rule=Host(`${MEDHEADERS_API_HOST}`)"
+      - "traefik.http.routers.tran-wss.entrypoints=ws"
+      - "traefik.http.services.tran-wss.loadbalancer.server.port=3500"
+
+  # WEB ERS -- LOCAL VERSION
+  web-ers:
+    build: ../../.
+    networks:
+      - frontend
+    depends_on:
+      - traefik-proxy
+    ports:
+      - "${WEBERS_PORT}:80"
+    environment:
+      - APP_URL=${WEBERS_URL}:${WEBERS_PORT}
+      - MEDHEADERS_API_BASE_URL=http://${MEDHEADERS_API_HOST}
+      - MEDHEADERS_WSS_HOST=${MEDHEADERS_API_HOST}
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge

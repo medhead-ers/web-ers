@@ -13,7 +13,9 @@ describe('<Login />', () => {
     cy.get('input[name=password]').should('exist');
     cy.get('button[type=submit]').should('exist');
 
-    cy.get('input[name=username]').type(username);
-    cy.get('input[name=password]').type(`${password}{enter}`, { log: false });
+    cy.get('input[name=username]').type('test');
+    cy.get('input[name=password]').type('test', { log: false });
+    cy.get('button[type=submit]').click();
+
   })
 })
